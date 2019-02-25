@@ -4,13 +4,13 @@ import { map, switchMap, catchError } from "rxjs/operators";
 import { of } from "rxjs/Observable/of";
 
 import * as pizzaActions from "../actions/pizzas.actions";
-import * as fromServuces from "../../services";
+import * as fromServices from "../../services";
 
 @Injectable()
 export class PizzasEffects {
   constructor(
     private actions$: Actions,
-    private pizzaService: fromServuces.PizzasService
+    private pizzaService: fromServices.PizzasService
   ) {}
 
   @Effect()
@@ -30,6 +30,17 @@ export class PizzasEffects {
       return this.pizzaService.createPizza(pizza).pipe(
         map(pizza => new pizzaActions.CreatePizzaSuccess(pizza)),
         catchError(error => of(new pizzaActions.CreatePizzaFail(error)))
+      );
+    })
+  );
+
+  @Effect()
+  updateEffect$ = this.actions$.ofType(pizzaActions.UPDATE_PIZZA).pipe(
+    map((action: pizzaActions.UpdatePizza) => action.payload),
+    switchMap(pizza => {
+      return this.pizzaService.updatePizza(pizza).pipe(
+        map(pizza => new pizzaActions.UpdatePizzaSuccess(pizza)),
+        catchError(error => of(new pizzaActions.UpdatePizzaFail(error)))
       );
     })
   );
