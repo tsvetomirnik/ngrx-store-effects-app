@@ -19,7 +19,8 @@ import { Pizza } from "../../models/pizza.model";
         <div *ngIf="!(pizzas$ | async)?.length">
           No pizzas, add one to get started.
         </div>
-        <pizza-item *ngFor="let pizza of (pizzas$ | async)" [pizza]="pizza"> </pizza-item>
+        <pizza-item *ngFor="let pizza of (pizzas$ | async)" [pizza]="pizza">
+        </pizza-item>
       </div>
     </div>
   `
